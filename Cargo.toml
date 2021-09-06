@@ -1,0 +1,21 @@
+[package]
+name = "gaussian_beam"
+version = "0.1.0"
+edition = "2018"
+
+
+[dependencies]
+rayon = "1.5"
+numpy = "0.14"
+ndarray = "0.15"
+rustfft = "6.0.1"
+
+
+
+[lib]
+name = "beams"
+crate-type = ["cdylib"]
+
+[dependencies.pyo3]
+version = "0.14"
+features = ["extension-module", "num-complex"]
