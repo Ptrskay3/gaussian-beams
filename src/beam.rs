@@ -1,9 +1,9 @@
-#![allow(non_snake_case)]
 use pyo3::prelude::*;
 use pyo3::types::PyType;
 use rayon::prelude::*;
 use std::f32::consts::PI;
 
+#[allow(non_snake_case)]
 #[pyclass]
 #[derive(Debug, Clone)]
 pub struct GaussianBeam {
@@ -68,6 +68,7 @@ impl GaussianBeam {
         (self.z / z_0).atan()
     }
 
+    #[allow(non_snake_case)]
     pub fn calc_I(&self, x: u32, y: u32) -> f64 {
         let x = x as f64 * 7E-6;
         let y = y as f64 * 7E-6;
@@ -94,7 +95,7 @@ impl GaussianBeam {
         for (y, row) in inner.iter_mut().enumerate() {
             row.par_iter_mut().enumerate().for_each(|(x, item)| {
                 *item = self.calc_I(x as u32, y as u32);
-            }) 
+            })
         }
         inner
     }

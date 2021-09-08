@@ -1,18 +1,18 @@
+#![warn(clippy::all)]
+
 pub mod beam;
 pub mod color;
 pub mod fft;
-pub mod render;
 pub mod scene;
 
 use crate::fft::fft;
 use ndarray::Array;
+use ndarray::{ArrayD, ArrayViewD, ArrayViewMutD};
 use numpy::{IntoPyArray, PyArray1};
+use numpy::{PyArrayDyn, PyReadonlyArrayDyn};
 use pyo3::prelude::*;
 use rayon::ThreadPoolBuildError;
 use rustfft::num_complex::Complex;
-use ndarray::{ArrayD, ArrayViewD, ArrayViewMutD};
-use numpy::{PyArrayDyn, PyReadonlyArrayDyn};
-use pyo3::prelude::{pymodule, PyModule, PyResult, Python};
 
 pub fn init_par(num_threads: usize) -> Result<(), ThreadPoolBuildError> {
     rayon::ThreadPoolBuilder::new()
@@ -37,7 +37,6 @@ fn beams(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
 
         Ok(array.into_pyarray(py).to_owned())
     }
-
 
     fn axpy(a: f64, x: ArrayViewD<'_, f64>, y: ArrayViewD<'_, f64>) -> ArrayD<f64> {
         a * &x + &y
@@ -66,8 +65,6 @@ fn beams(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
         mult(a, x);
         Ok(())
     }
-
-    
 
     Ok(())
 }
