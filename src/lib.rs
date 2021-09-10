@@ -1,4 +1,5 @@
 #![warn(clippy::all)]
+#![feature(test)]
 
 pub mod beam;
 pub mod color;
@@ -67,4 +68,31 @@ fn beams(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::beam::GaussianBeam;
+    use crate::scene::{render, Scene};
+    extern crate test;
+    use test::Bencher;
+
+    #[bench]
+    fn bench_render(b: &mut Bencher) {
+        let mut beam = GaussianBeam::new(632.8 * 10E-9, 1E-3, 0.8);
+        beam.set_x_offset(200.0);
+        beam.set_y_offset(200.0);
+        let mut beam2 = GaussianBeam::new(632.8 * 10E-9, 1E-3, 0.001);
+        beam2.set_x_offset(100.0);
+        beam2.set_y_offset(100.0);
+
+        let scene = Scene {
+            width: 500,
+            height: 500,
+            elements: vec![beam, beam2],
+        };
+        b.iter(move || {
+            render(&scene);
+        });
+    }
 }

@@ -54,6 +54,14 @@ impl GaussianBeam {
         })
     }
 
+    pub fn set_x_offset(&mut self, x_offset: f64) {
+        self.x_offset = x_offset;
+    }
+
+    pub fn set_y_offset(&mut self, y_offset: f64) {
+        self.y_offset = y_offset;
+    }
+
     pub fn calc_z_0(&self) -> f64 {
         self.w_0 * self.w_0 * PI as f64 / self.wavelength
     }
